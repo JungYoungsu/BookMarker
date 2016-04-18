@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+	'book.apps.BookConfig',
+	'main.apps.MainConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -76,8 +78,12 @@ WSGI_APPLICATION = 'bm_web.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'bookmarker_db',
+		'USER': 'capstone',
+		'PASSWORD': 'light808',
+		'HOST': 'cap1-db.cpwa86v6hjzb.ap-northeast-2.rds.amazonaws.com',
+		'PORT': '5432',
     }
 }
 
