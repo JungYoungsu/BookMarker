@@ -5,15 +5,24 @@ from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from bs4 import BeautifulSoup
 from openpyxl import load_workbook
+from base64 import b64decode
+from PIL import Image
+from io import BytesIO
+
 
 from book.models import *
+from main.models import *
 
 import json
 import urllib
 import os.path
+import datetime
+import base64
+import StringIO
 
 
 	
@@ -134,17 +143,24 @@ def createBook(cid,type,title,author,mark):
 	
 	book = Book(cid = cid, type = type, title = title, author = author, mark = mark, bookshelf = bookshelf)
 	book.save()
-
+	
+	if not (Book_AddDate.objects.filter(date = datetime.date.today()).exists()) :
+		date = Book_AddDate(date = datetime.date.today(), count = 1)
+	else :
+		date = Book_AddDate.objects.get(date = datetime.date.today())
+		date.count = date.count + 1
+	date.save()
 	return True
 
-@csrf_exempt
-def getBook(request):
+@csrf_exempt	
+def addSideimg(request):
 	try:
 		cid = request.POST['cid']
+		img = request.POST['img']
+		img = img.replace("data:image/jpeg;base64,", "")
 	except:
-		cid = 1260
-		#variables = {'success': False, 'reason': 'Request- POST cid is null'}
-		#return HttpResponse(json.dumps(variables), content_type='application/json')
+		variables = {'success': False, 'reason': "Request- POST [cid, img] is null"}
+		return HttpResponse(json.dumps(variables), content_type='application/json')
 	
 	try:
 		if not Book.objects.filter(cid = cid).exists():
@@ -152,8 +168,76 @@ def getBook(request):
 			
 		book = Book.objects.get(cid = cid)
 	except Exception as e:
-		variables = {'success': False, 'reason': 'Book object :: ' + str (e)}
+		variables = {'success': False, 'reason': "Book object :: " + str (e)}
 		return HttpResponse(json.dumps(variables), content_type='application/json')
 
-	variables = {'success': True, 'title': book.title, 'author': book.author, 'mark': book.mark, 'feature':"", 'bookshelf':book.bookshelf.name}
+	try:
+		filename = cid + ".jpg"
+		tempfile = Image.open(BytesIO(b64decode(img)))
+		tempfile_io = StringIO.StringIO()
+		print "ee3"
+		tempfile.save(tempfile_io, format='JPEG')
+		print "ee2"
+		image_file = InMemoryUploadedFile(tempfile_io, None, filename,'image/jpeg',tempfile_io.len, None)
+		print "ee"
+		book.sideImage.save(filename, image_file, save=True)
+	except Exception as e:
+		variables = {'success': False, 'reason': "Save img fail :: " + str (e)}
+		return HttpResponse(json.dumps(variables), content_type='application/json')
+	
+	variables = {'success': True, 'reason': ""}
+	return HttpResponse(json.dumps(variables), content_type='application/json')
+	
+	
+	
+@csrf_exempt
+def getBook(request):
+	try:
+		cid = request.POST['cid']
+	except:
+		cid = ""
+	try:
+		mark = request.POST['mark']
+	except:
+		mark = ""
+		
+	if mark == "" and cid == "" :
+		variables = {'success': False, 'reason': "Request- POST [cid, mark] is null"}
+		return HttpResponse(json.dumps(variables), content_type='application/json')
+	
+	if mark == "":
+		try:
+			if not Book.objects.filter(cid = cid).exists():
+				parseBook(cid)
+				
+			book = Book.objects.get(cid = cid)
+		except Exception as e:
+			variables = {'success': False, 'reason': "Book object :: " + str (e)}
+			return HttpResponse(json.dumps(variables), content_type='application/json')
+	else:
+		try:
+			if not Book.objects.filter(mark = mark).exists():
+				variables = {'success': False, 'reason': mark + " : Book does not exist in Server" }
+				return HttpResponse(json.dumps(variables), content_type='application/json')
+			book = Book.objects.get(mark = mark)
+		except Exception as e:
+			variables = {'success': False, 'reason': "Book object :: " + str (e)}
+			return HttpResponse(json.dumps(variables), content_type='application/json')
+	
+	
+	
+	
+	if not (Book_SearchDate.objects.filter(date = datetime.date.today()).exists()) :
+		date = Book_SearchDate(date = datetime.date.today(), count = 1) 
+	else :
+		date = Book_SearchDate.objects.get(date = datetime.date.today())
+		date.count = date.count + 1
+	date.save()
+	
+	feature = ""
+	if not book.sideImage == '' :
+		feature = book.sideImage.url
+	
+	variables = {'success': True, 'title': book.title, 'author': book.author, 'mark': book.mark, 
+		'feature': feature, 'bookshelf':book.bookshelf.name}
 	return HttpResponse(json.dumps(variables), content_type='application/json')
