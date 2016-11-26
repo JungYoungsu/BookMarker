@@ -1,0 +1,35 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<link href='{% static "location/normalize.css" %}' rel="stylesheet">
+		<link href='{% static "location/map.css" %}' rel="stylesheet">
+		
+		<script src= '{% static "bower_components/jquery/dist/jquery.min.js" %}'></script>
+		<script src='{% static "location/map.js" %}'></script>
+	</head>
+
+	<body>
+		<img id="mainmap" src="/media/map/main.png">
+		{# {% for location in locations %} #}
+			<!--span id="shape_{{ location.num }}" class="shape" style="top:{{ location.top }}px; left:{{ location.left }}px;">
+			{{ location.num }}</span-->
+		{# {% endfor %} #}
+		{# {% for seat in seats %} #}
+			<!--span id="shape_{{ seat.num }}" class="shape" style="top:{{ seat.top }}px; left:{{ seat.left }}px;">
+			<img id="flag" src="/media/map/flag.gif">{{ seat.num }}</span-->
+		{# {% endfor %} #}
+		<div id="shapes">
+		</div>
+		<div id="shelfs">
+			{% for shelf in shelfs %}
+			<img class="shelf" id="shelf_{{ shelf.name }}" src="/media/map/bookshelf_{{ shelf.name }}.png">
+			{% endfor %}
+			<br>
+		</div>
+		<img id="man" src="/media/map/man.gif">
+		<img id="seat" src="/media/map/flag.gif">
+	</body>
+	
+</html>

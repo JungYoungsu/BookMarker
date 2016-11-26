@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
 	'book.apps.BookConfig',
 	'main.apps.MainConfig',
+	'location.apps.LocationConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,7 +58,9 @@ ROOT_URLCONF = 'bm_web.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+			'/home/ubuntu/bm_web/location/template',
+		],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

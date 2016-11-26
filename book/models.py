@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from location.models import *
 
 # Create your models here.
 
@@ -10,7 +11,9 @@ def UploadImage(instance, filename):
 class Bookshelf(models.Model):
 	name = models.CharField(max_length=64, default=None) 
 	lower_mark = models.CharField(max_length=128) 
-	upper_mark = models.CharField(max_length=128) 
+	upper_mark = models.CharField(max_length=128)
+	
+	location = models.ForeignKey('location.Location', null=True)
 
 class Book(models.Model):
 	cid = models.IntegerField() #Contents number

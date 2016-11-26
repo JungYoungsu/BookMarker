@@ -23,10 +23,11 @@ from main import views as main_views
 
 urlpatterns = [
 	url(r'^book/', include('book.urls')),
+	url(r'^location/', include('location.urls')),
 	
 	url(r'^$', main_views.index),
 	url(r'^shelfs/', main_views.shelfs),
-	url(r'^books/', main_views.books),
+	url(r'^books/', main_views.books),	
 	url(r'^addbooks/', main_views.addbooks),
 	url(r'^comments/', main_views.comments),
 	url(r'^addcomment/', main_views.addcomment),

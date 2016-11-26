@@ -1,0 +1,40 @@
+/* Basic */
+
+#mainmap {
+	position: absolute;
+	z-index : 0;
+	width: 360px;
+}
+
+.shelf {
+	position: absolute;
+	z-index : 1;
+	display : none;
+	width: 360px;
+}
+
+.shape {
+	position: absolute;
+	z-index : 2;
+    background-color: red;
+    width: 9px;
+    height: 9px;
+    border-radius: 5px;
+    opacity: 0.85;
+}
+
+#seat {
+	position: absolute;
+	z-index : 3;	
+	display: none;
+	width: 20px;
+}
+
+#man {
+	position: absolute;
+	z-index : 4;
+	display: none;
+	width: 25px;
+	height: 20px;
+	display: none;
+}
