@@ -33,7 +33,6 @@ function clear() {
 	clearInterval(rid);
 	clearInterval(aid);
 	$(".shape").remove();
-	$('.shelf').hide();
 	$('#seat').hide();
 }
 
@@ -51,8 +50,8 @@ function setlocation(str) {
 			if (data['top'] == 48) data['top'] = 58;
 			
 			$("#man").css({
-				top: data['top']-18,
-				left: data['left']
+				top: data['top']-20,
+				left: data['left']-10
 			});
 			setman();
 			if(seat != 0) setseat(seat); // 열람석 찾는 경우엔 setseat 시동(노트북열람석 - 보다 더 짧은 거리 찾기 위함)
@@ -134,7 +133,7 @@ function appendshape(top, left, id, i) { // 이동 경로용 빨간 동그라미
 		shape.animate({
 				top: top[i+1],
 				left: left[i+1],
-		}, 900);
+		}, 600);
 	}
 }
 
@@ -161,12 +160,12 @@ function path(start, end){
 				data['path'].forEach(function (p , i) {
 					$("#shape_"+p).remove();
 				});
-			},900);
+			}, 600);
 			aid = setInterval( function() {
 				data['path'].forEach(function (p , i) {
 					appendshape(data['top'], data['left'], p, i);
 				});
-			},900);
+			}, 600);
 		}
 	});
 }
