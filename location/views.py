@@ -10,13 +10,13 @@ from book.models import *
 # Create your views here.
 
 def showmap(request):
-	shelfs = Bookshelf.objects.all()
-	locations = Location.objects.all()
-	seats = SeatGroup.objects.all()
+	shelfs = range(1,103) # number of shelfs
+	#locations = Location.objects.all()
+	#seats = SeatGroup.objects.all()
 	context = {
-		'shelfs': shelfs,
-		'locations': locations,
-		'seats': seats
+		'shelfs': shelfs#,
+		#'locations': locations,
+		#'seats': seats
 	}
 
 	return render(request, 'map.html', context)
@@ -24,6 +24,9 @@ def showmap(request):
 	
 @csrf_exempt
 def setlocation(request):
+	arr = [1]
+	arr = arr + request.POST['aplist'].split('@')
+
 	X = tf.placeholder("float", [None, 185])
 	W = tf.Variable(tf.zeros([185, 75]), name="W")
 	hypothesis = tf.nn.softmax(tf.matmul(X, W))
@@ -32,10 +35,14 @@ def setlocation(request):
 	
 	with tf.Session() as sess:
 		saver.restore(sess, "/home/ubuntu/bm_web/location/model.ckpt")
-		a = sess.run(hypothesis, feed_dict={X:[[1, -77, -59, -73, -80, -50, -52, -61, -64, -58, -70, -77, -75, -78, -82, -74, -81, -51, -75, -73, -62, -57, -81, -80, -84, -87, -82, -67, -72, -85, -76, -81, -75, -79, -82, -64, -79, -74, -82, -85, -80, -75, -78, -85, -85, -83, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130]]})
+		a = sess.run(hypothesis, feed_dict={X:[arr]})
+		'''
+		[1, -77, -59, -73, -80, -50, -52, -61, -64, -58, -70, -77, -75, -78, -82, -74, -81, -51, -75, -73, -62, -57, -81, -80, -84, -87, -82, -67, -72, -85, -76, -81, -75, -79, -82, -64, -79, -74, -82, -85, -80, -75, -78, -85, -85, -83, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130, -130]
+		-77@-59@-73@-80@-50@-52@-61@-64@-58@-70@-77@-75@-78@-82@-74@-81@-51@-75@-73@-62@-57@-81@-80@-84@-87@-82@-67@-72@-85@-76@-81@-75@-79@-82@-64@-79@-74@-82@-85@-80@-75@-78@-85@-85@-83@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130@-130
+		'''
 		result = sess.run(tf.arg_max(a, 1))
 	
-	location = Location.objects.get(num = result[0])
+	location = Location.objects.get(num = result[0]+1)
 	
 	var = {'location': location.num, 'top': location.top, 'left': location.left}
 	return JsonResponse(var)
@@ -45,13 +52,15 @@ def setseat(request):
 	seat = Seat.objects.get(num = request.POST['seat'])
 	location = request.POST['location']
 	seatgroup = seat.seatgroup
-	if seatgroup.location2 != 0:
-		path1 = find_shortest_path(g, location, str(seatgroup.location.num))
-		path2 = find_shortest_path(g, location, str(seatgroup.location2))
-		target = seatgroup.location2 if len(path1) > len(path2) else seatgroup.location.num
-	else:
-		target = seatgroup.location.num
-		
+	target = seatgroup.location.num
+	try:
+		if seatgroup.location2 != 0:
+			path1 = find_shortest_path(g, location, str(seatgroup.location.num))
+			path2 = find_shortest_path(g, location, str(seatgroup.location2))
+			target = seatgroup.location2 if len(path1) > len(path2) else seatgroup.location.num
+	except:
+		None
+	
 	var = {'seatgroup': seatgroup.num, 'top':seatgroup.top, 'left':seatgroup.left, 'target': target}
 	return JsonResponse(var)
 
@@ -107,11 +116,11 @@ def path(request):
 		count += 1	
 		line = txt.readline().splitlines()[0]
 	"""
+	
 	start = request.POST['start']
 	end = request.POST['end']
 	
 	path = find_shortest_path(g, start, end)
-	
 	top = []
 	left = []
 	
@@ -143,7 +152,7 @@ g = {   "1" : ["2", "75"],
         "17" : ["16", "18"],
         "18" : ["17", "19", "22"],
         "19" : ["18", "20"],
-        "20" : ["19", "21", "4"],
+        "20" : ["19", "21"],
         "21" : ["20", "5"],
         "22" : ["18", "23"],
         "23" : ["22", "24"],

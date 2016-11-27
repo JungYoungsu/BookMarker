@@ -38,3 +38,40 @@
 	height: 20px;
 	display: none;
 }
+
+.cam {
+	position: absolute;
+	z-index : 5;
+	opacity: 0.8;
+	width: 17px;
+}
+
+#panorama_container {
+	position: absolute;
+	z-index : 6;
+	display: none;
+	opacity: 0.9;
+	width: 351px;
+	height: 234px;
+	top:5px;
+	left:5px;
+	text-align: center;
+}
+
+#panorama {
+	width: 351px;
+	height: 234px;
+}
+
+#button1 {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	left: 50%;
+}
