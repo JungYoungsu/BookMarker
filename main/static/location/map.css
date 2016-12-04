@@ -46,7 +46,7 @@
 	width: 17px;
 }
 
-#panorama_container {
+.panorama_container {
 	position: absolute;
 	z-index : 6;
 	display: none;
@@ -58,12 +58,12 @@
 	text-align: center;
 }
 
-#panorama {
+.panorama {
 	width: 351px;
 	height: 234px;
 }
 
-#button1 {
+.button {
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;

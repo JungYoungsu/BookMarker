@@ -11,10 +11,12 @@ from book.models import *
 
 def showmap(request):
 	shelfs = range(1,103) # number of shelfs
+	cams = range(1,9) # number of cams
 	#locations = Location.objects.all()
 	#seats = SeatGroup.objects.all()
 	context = {
-		'shelfs': shelfs#,
+		'shelfs': shelfs,
+		'cams' : cams
 		#'locations': locations,
 		#'seats': seats
 	}

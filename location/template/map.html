@@ -6,13 +6,9 @@
 		<link href='{% static "location/normalize.css" %}' rel="stylesheet">
 		<link href='{% static "location/map.css" %}' rel="stylesheet">
 		<link href='{% static "location/pannellum.css" %}' rel="stylesheet">
-		
-		<script src='{% static "bower_components/jquery/dist/jquery.min.js" %}'></script>
-		<script src='{% static "location/map.js" %}'></script>
-		<script src='{% static "location/pannellum.js" %}'></script>
 	</head>
 
-	<body>
+	<body class="body">
 		<img id="mainmap" src="/media/map/main.png">
 		{# {% for location in locations %} #}
 			<!--span id="shape_{{ location.num }}" class="shape" style="top:{{ location.top }}px; left:{{ location.left }}px;">
@@ -24,7 +20,7 @@
 		{# {% endfor %} #}
 		<div id="cams">
 			<img class="cam" id="cam_1" src="/media/map/cam.png" style="top:44px; left:44px">
-			<img class="cam" id="cam_1" src="/media/map/cam.png" style="top:55px; left:171px">
+			<img class="cam" id="cam_2" src="/media/map/cam.png" style="top:55px; left:171px">
 			<img class="cam" id="cam_3" src="/media/map/cam.png" style="top:44px; left:298px">
 			<img class="cam" id="cam_4" src="/media/map/cam.png" style="top:135px; left:280px">
 			<img class="cam" id="cam_5" src="/media/map/cam.png" style="top:238px; left:280px">
@@ -35,10 +31,14 @@
 		<img id="man" src="/media/map/man.gif">
 		<img id="seat" src="/media/map/flag.gif">
 		
-		<div id="panorama_container">
-			<div id="panorama">
+		<div id="panoramas">
+			{% for cam in cams %}
+			<div class="panorama_container" id="panorama_container_{{ cam }}">
+				<div class="panorama" id="panorama_{{ cam }}">
+				</div>
+				<button class="button">Close</button>
 			</div>
-			<button id="button1">Close</button>
+			{% endfor %}
 		</div>
 		<div id="shapes">
 		</div>
@@ -47,6 +47,10 @@
 			<img class="shelf" id="shelf_{{ shelf }}" src="/media/map/bookshelf/bookshelf_{{ shelf }}_1.png">
 			{% endfor %}
 		</div>
+		
+		<script src='{% static "bower_components/jquery/dist/jquery.min.js" %}'></script>
+		<script src='{% static "location/pannellum.js" %}'></script>
+		<script src='{% static "location/map.js" %}'></script>
 	</body>
 	
 </html>

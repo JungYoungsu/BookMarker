@@ -3,25 +3,26 @@ target = 0;
 
 shelf = "";
 seat = 0;
+seat_top = 0;
+seat_left = 0;
 seatgroup = 0;
 
 aid = null; // interval ID to append shape
 rid = null;	// interval ID to remove shape
 
-$(function() {
-	$('.cam').click( function() {
-		address = "/media/map/panorama/" + $(this).attr('id').split("_")[1] + ".jpg";
-		pannellum.viewer('panorama', {
-			"type": "equirectangular",
-			"panorama": address,
-			"autoLoad": true,
-			"autoRotate": -5,
-			"showFullscreenCtrl": false
-		});
-		$("#panorama_container").show();
+for (i = 1; i < 9; i++) {
+	pannellum.viewer('panorama_' + i , {
+		"type": "equirectangular",
+		"panorama":  "/media/map/panorama/" + i + ".jpg",
+		"showFullscreenCtrl": false
 	});
-	$('#button1').click( function() {
-		$("#panorama_container").hide();
+}
+$(function() {
+	$('.cam').click( function() {		
+		$("#panorama_container_"+ $(this).attr('id').split("_")[1]).show();
+	});
+	$('.button').click( function() {
+		$(".panorama_container").hide();
 	});
 });
 
@@ -29,6 +30,8 @@ function clear() {
 	target = 0;
 	shelf = "";
 	seat = 0;
+	seat_top = 0;
+	seat_left = 0;
 	seatgroup = 0;
 	clearInterval(rid);
 	clearInterval(aid);
@@ -91,6 +94,8 @@ function setseat(id){
 				left: data['left']
 			}).show();
 			
+			seat_top = data['top'];
+			seat_left = data['left'];
 			setman();
 		}
 	})
@@ -133,7 +138,7 @@ function appendshape(top, left, id, i) { // 이동 경로용 빨간 동그라미
 		shape.animate({
 				top: top[i+1],
 				left: left[i+1],
-		}, 600);
+		}, 900);
 	}
 }
 
@@ -153,6 +158,13 @@ function path(start, end){
 			clearInterval(aid);
 			$(".shape").remove();
 			
+			if (seat != 0) {
+				data['top'].push(seat_top + 17);
+				data['left'].push(seat_left - 1);
+				data['path'].push("seat");
+			}
+			
+			
 			data['path'].forEach(function (p , i) {
 				appendshape(data['top'], data['left'], p, i);
 			});
@@ -160,12 +172,12 @@ function path(start, end){
 				data['path'].forEach(function (p , i) {
 					$("#shape_"+p).remove();
 				});
-			}, 600);
+			}, 900);
 			aid = setInterval( function() {
 				data['path'].forEach(function (p , i) {
 					appendshape(data['top'], data['left'], p, i);
 				});
-			}, 600);
+			}, 900);
 		}
 	});
 }
